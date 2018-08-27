@@ -11,7 +11,7 @@ RUN cd /opt \
    && rm qt-everywhere-src-5.11.1.tar.xz \
    && mkdir Qt \
    && cd Qt \
-   && echo -e 'o\ny\n\n' | ../qt-everywhere-src-5.11.1/configure -prefix . \
+   && ../qt-everywhere-src-5.11.1/configure -prefix . -opensource -confirm-license \
    && make -j 16 \
    && make -j 16 install \
    && rm -rf ../qt-everywhere-src-5.11.1
