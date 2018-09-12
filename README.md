@@ -18,5 +18,5 @@ sudo docker build -t [tag] -f [Dockerfile] .
 
 To run a Docker container:
 ```
-sudo docker run --rm -it [tag]
+sudo docker run [--runtime=nvidia] --rm -it [tag]
 ```
