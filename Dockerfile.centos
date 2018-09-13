@@ -3,7 +3,9 @@ MAINTAINER Ben Shealy <btsheal@clemson.edu>
 
 # install package dependencies
 USER 0
-RUN yum install -y make mesa-libGL-devel wget
+
+RUN yum install -y epel-release make gperf bison flex mesa-libGL-devel wget \
+   && yum install -y clinfo ocl-icd-devel
 
 # install Qt
 RUN cd /opt \
@@ -26,7 +28,6 @@ RUN cd /opt \
    && cd ACE/build \
    && git checkout develop \
    && qmake ../src/ACE.pro PREFIX=/opt/ace \
-   && make qmake_all \
    && make -j 20 \
    && make qmake_all \
    && make install
@@ -43,7 +44,6 @@ RUN cd /opt \
    && cd KINC/build \
    && git checkout develop \
    && qmake ../src/KINC.pro PREFIX=/opt/kinc \
-   && make qmake_all \
    && make -j 20 \
    && make qmake_all \
    && make install
