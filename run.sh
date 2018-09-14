@@ -1,5 +1,5 @@
 #!/bin/sh
-# Entrypoint script for KINC docker image
+# Entrypoint script for Docker image
 
 UNUSED=$1
 DATA_DIR="$2"

@@ -1,10 +1,10 @@
-# KINC-docker
+# docker-tools
 
-This repository provides resources for running KINC with Kubernetes. In particular, this repository provides two Dockerfiles for building a Docker image of KINC based on Ubuntu or CentOS, as well as a script to deploy a pod of KINC containers on a Kubernetes cluster.
+This repository provides resources for running various systems biology tools with Kubernetes. In particular, this repository provides Dockerfiles for GEMmaker, KINC, and gene-oracle, as well as scripts to deploy a pod of containers on a Kubernetes cluster.
 
 ## Dependencies
 
-You need Docker to build and push Docker images, and `nvidia-docker` to test Docker images on a local machine (with a GPU). To deploy a KINC pod to a Kubernetes cluster, you need `kubectl`.
+You need Docker to build and push Docker images, and `nvidia-docker` to test Docker images on a local machine (with a GPU). To deploy a pod to a Kubernetes cluster, you need `kubectl`.
 
 ## Usage
 
@@ -39,11 +39,11 @@ Test your Kubernetes configuration:
 kubectl config view
 ```
 
-Before you deploy a KINC pod, create a directory with the following:
+Before you deploy a pod, create a directory with the following:
 1. A script named `command.sh` that you want to run on each container
 2. Any data files that are to be copied to each container
 
-Deploy a KINC pod:
+Deploy a pod:
 ```
 ./deploy.sh [num-containers] [data-dir]
 ```

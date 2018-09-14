@@ -1,5 +1,5 @@
 #!/bin/sh
-# Deploy a KINC pod to a Kubernetes cluster.
+# Deploy a pod to a Kubernetes cluster.
 
 # command-line arguments
 NUM_CONTAINERS=$1
