@@ -4,8 +4,11 @@ MAINTAINER Ben Shealy <btsheal@clemson.edu>
 # install package dependencies
 USER 0
 
-RUN yum install -y epel-release make gperf bison flex mesa-libGL-devel wget \
+RUN yum install -y epel-release make gperf bison flex mesa-libGL-devel openmpi-devel telnet wget \
    && yum install -y clinfo ocl-icd-devel
+
+ENV MPIDIR  "/usr/lib64/openmpi"
+ENV PATH    "$MPIDIR/bin:$PATH"
 
 # install Qt
 RUN cd /opt \
@@ -50,3 +53,9 @@ RUN cd /opt \
 
 ENV KINCDIR  "/opt/kinc"
 ENV PATH     "$KINCDIR/bin:$PATH"
+
+# install Kubernetes entrypoint
+WORKDIR /root
+COPY run.sh run.sh
+
+RUN /bin/bash

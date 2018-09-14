@@ -5,7 +5,7 @@ MAINTAINER Ben Shealy <btsheal@clemson.edu>
 RUN apt-get update \
    && apt-get install -y wget xz-utils \
    && apt-get install -y build-essential python gperf bison flex pkg-config libgl1-mesa-dev \
-   && apt-get install -y clinfo git libgsl-dev libopenblas-dev libopenmpi-dev ocl-icd-opencl-dev
+   && apt-get install -y clinfo git libgsl-dev libopenblas-dev libopenmpi-dev ocl-icd-opencl-dev telnet
 
 # add NVIDIA platform to OpenCL
 RUN mkdir -p /etc/OpenCL/vendors \
@@ -54,3 +54,9 @@ RUN cd /opt \
 
 ENV KINCDIR  "/opt/kinc"
 ENV PATH     "$KINCDIR/bin:$PATH"
+
+# install Kubernetes entrypoint
+WORKDIR /root
+COPY run.sh run.sh
+
+RUN /bin/bash
