@@ -3,7 +3,7 @@
 
 # command-line arguments
 NUM_CONTAINERS=$1
-DATA_DIR="$2"
+INPUT_DIR="$2"
 
 IMAGE_NAME="docker.io/bentsherman/kinc:ubuntu"
 NAMESPACE="deepgtex-prp"
@@ -66,7 +66,7 @@ echo
 # Copy data and start each container
 for i in $(seq 1 $1); do
     echo "Copying data to $POD_NAME-$i..."
-    kubectl cp "$DATA_DIR" "$NAMESPACE/$POD_NAME:/root/data" -c "$POD_NAME-$i" &
+    kubectl cp "$INPUT_DIR" "$NAMESPACE/$POD_NAME:/root/input" -c "$POD_NAME-$i" &
 
     echo "Starting $POD_NAME-$i..."
     kubectl exec "$POD_NAME" -c "$POD_NAME-$i" -- /bin/bash -c "cd /root; ./run.sh" &

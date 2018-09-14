@@ -1,24 +1,26 @@
 #!/bin/sh
 # Entrypoint script for Docker image
 
-DATA_DIR="data"
+INPUT_DIR="input"
 
-# Wait for input data to finish downloading
+# wait for input data to finish downloading
 PREV=0
 CURR=1
 
 while [ $PREV != $CURR ]; do
-   echo "Downloading data..."
+   echo "Downloading input data..."
    sleep 5
 
    PREV=$CURR
-   CURR=$(find $DATA_DIR -exec stat -c "%Y" \{\} \; | sort -n | tail -1)
+   CURR=$(find $INPUT_DIR -exec stat -c "%Y" \{\} \; | sort -n | tail -1)
 done
 
 echo "Download finished."
+echo
 
 # run script
 echo "Running command.sh..."
+echo
 
-cd $DATA_DIR
+cd $INPUT_DIR
 sh ./command.sh
