@@ -66,10 +66,10 @@ echo
 # Copy data and start each container
 for i in $(seq 1 $1); do
     echo "Copying data to $POD_NAME-$i..."
-    kubectl cp "$DATA_DIR" "$NAMESPACE/$POD_NAME:/root" -c "$POD_NAME-$i" &
+    kubectl cp "$DATA_DIR" "$NAMESPACE/$POD_NAME:/root/data" -c "$POD_NAME-$i" &
 
     echo "Starting $POD_NAME-$i..."
-    kubectl exec "$POD_NAME" -c "$POD_NAME-$i" -- /bin/bash -c "/root/run.sh" &
+    kubectl exec "$POD_NAME" -c "$POD_NAME-$i" -- /bin/bash -c "cd /root; ./run.sh" &
 done
 
 wait

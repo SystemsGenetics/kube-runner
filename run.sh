@@ -1,10 +1,7 @@
 #!/bin/sh
 # Entrypoint script for Docker image
 
-UNUSED=$1
-DATA_DIR="$2"
-
-echo $@
+DATA_DIR="data"
 
 # Wait for input data to finish downloading
 PREV=0
@@ -23,4 +20,5 @@ echo "Download finished."
 # run script
 echo "Running command.sh..."
 
-sh $DATA_DIR/command.sh
+cd $DATA_DIR
+sh ./command.sh
