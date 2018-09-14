@@ -12,6 +12,7 @@ POD_NAME="kinc"
 
 # TODO: refactor pod into a job
 # TODO: Add "nodeSelector" attribute to deploy on specific nodes
+#       https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
 
 # Generate beginning of pod config
 cat > $POD_FILE <<EOF
