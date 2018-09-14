@@ -57,5 +57,3 @@ ENV PATH     "$KINCDIR/bin:$PATH"
 # install Kubernetes entrypoint
 WORKDIR /root
 COPY run.sh run.sh
-
-RUN /bin/bash

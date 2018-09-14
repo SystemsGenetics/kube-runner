@@ -7,7 +7,7 @@ DATA_DIR="$2"
 
 IMAGE_NAME="docker.io/bentsherman/kinc:ubuntu"
 NAMESPACE="deepgtex-prp"
-POD_FILE="pod.yaml"
+POD_FILE="pod.yml"
 POD_NAME="kinc"
 
 # TODO: refactor pod into a job
