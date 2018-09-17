@@ -1,14 +1,18 @@
-#!/bin/sh
+#!/bin/bash
 # Deploy a pod to a Kubernetes cluster.
 
 # command-line arguments
-NUM_CONTAINERS=$1
-INPUT_DIR="$2"
+if [[ $# != 4 ]]; then
+   echo "usage: $0 <pod-name> <image-name> <num-containers> <input-dir>"
+   exit -1
+fi
 
-IMAGE_NAME="docker.io/bentsherman/kinc:ubuntu"
 NAMESPACE="deepgtex-prp"
 POD_FILE="pod.yml"
-POD_NAME="kinc"
+POD_NAME="$1"
+IMAGE_NAME="$2"
+NUM_CONTAINERS=$3
+INPUT_DIR="$4"
 
 # TODO: refactor pod into a job
 # TODO: Add "nodeSelector" attribute to deploy on specific nodes

@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Entrypoint script for Docker image
 
 INPUT_DIR="input"

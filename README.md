@@ -18,13 +18,13 @@ You need Docker to build and push Docker images, and [nvidia-docker](https://git
 
 Build a Docker image:
 ```
-cd [app-directory]
-sudo docker build -t [tag] -f [Dockerfile] .
+cd <app-directory>
+sudo docker build -t <tag> -f <Dockerfile> .
 ```
 
 Run a Docker container (locally):
 ```
-sudo docker run [--runtime=nvidia] --rm -it [tag]
+sudo docker run [--runtime=nvidia] --rm -it <tag>
 ```
 
 List the Docker images on your machine:
@@ -34,7 +34,7 @@ sudo docker images
 
 Push a Docker image to DockerHub:
 ```
-sudo docker push [tag]
+sudo docker push <tag>
 ```
 
 NOTE: In order to push an image to DockerHub, the image must be tagged with both a username and a repo name. For example:
@@ -63,7 +63,7 @@ The script `deploy.sh` can automatically deploy a Docker image by (1) creating a
 
 Deploy a pod:
 ```
-./deploy.sh [image-name] [num-containers] [input-dir]
+./deploy.sh <pod-name> <image-name> <num-containers> <input-dir>
 ```
 
 Check the status of your pods:
@@ -73,12 +73,12 @@ kubectl get pods
 
 Copy data from a container:
 ```
-kubectl cp [namespace]/[pod-name]:[remote-path] -c [container-name] [local-path]
+kubectl cp <namespace>/<pod-name>:<remote-path> -c <container-name> <local-path>
 ```
 
 Delete a pod:
 ```
-kubectl delete pod [pod-name]
+kubectl delete pod <pod-name>
 ```
 
 __Always delete pods that are finished to return their resources to the cluster.__
