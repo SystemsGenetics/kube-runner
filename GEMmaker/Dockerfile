@@ -102,3 +102,9 @@ RUN wget -q ftp://ftp.renci.org/pub/irods/releases/4.1.11/ubuntu14/irods-icomman
 #
 WORKDIR /root
 RUN git clone https://github.com/SystemsGenetics/GEMmaker.git
+
+#
+# Install Kubernetes entrypoint
+#
+WORKDIR /root
+COPY ../run.sh run.sh
