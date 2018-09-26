@@ -1,7 +1,8 @@
 #!/bin/bash
-# Entrypoint script for Docker image
+# Runscript for Docker image
 
 INPUT_DIR="$HOME/input"
+OUTPUT_DIR="$HOME/output"
 
 # wait for input data to finish downloading
 PREV=0
@@ -17,6 +18,9 @@ done
 
 echo "Download finished."
 echo
+
+# initialize output directory
+mkdir -p $OUTPUT_DIR
 
 # run script
 echo "Running command.sh..."

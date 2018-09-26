@@ -30,8 +30,10 @@ EOF
 
 # Add framework of n containers to end of file
 for i in $(seq 1 $NUM_CONTAINERS); do
+    CONTAINER_NAME="$POD_NAME-$(printf "%03d" $i)"
+
     cat >> $POD_FILE <<EOF
-  - name: $POD_NAME-$(printf "%03d" $i)
+  - name: $CONTAINER_NAME
     image: $IMAGE_NAME
     imagePullPolicy: Always
     resources:
@@ -68,13 +70,15 @@ echo
 kubectl get pod $POD_NAME
 echo
 
-# Copy data and start each container
+# Copy input data and start each container
 for i in $(seq 1 $1); do
-    echo "Copying data to $POD_NAME-$i..."
-    kubectl cp "$INPUT_DIR" "$NAMESPACE/$POD_NAME:/root/input" -c "$POD_NAME-$i" &
+    CONTAINER_NAME="$POD_NAME-$(printf "%03d" $i)"
 
-    echo "Starting $POD_NAME-$i..."
-    kubectl exec "$POD_NAME" -c "$POD_NAME-$i" -- /bin/bash -c "cd /root; ./run.sh" &
+    echo "Copying input data to $CONTAINER_NAME..."
+    kubectl cp "$INPUT_DIR" "$NAMESPACE/$POD_NAME:/root/input" -c $CONTAINER_NAME &
+
+    echo "Starting $CONTAINER_NAME..."
+    kubectl exec "$POD_NAME" -c $CONTAINER_NAME -- /bin/bash -c "cd /root; ./run.sh" &
 done
 
 wait
