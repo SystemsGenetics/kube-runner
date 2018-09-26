@@ -8,7 +8,7 @@ if [[ $# != 4 ]]; then
 fi
 
 NAMESPACE="deepgtex-prp"
-POD_FILE="pod.yml"
+POD_FILE="pod.yaml"
 POD_NAME="$1"
 IMAGE_NAME="$2"
 NUM_CONTAINERS=$3

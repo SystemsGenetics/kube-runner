@@ -1,7 +1,7 @@
 #!/bin/bash
 # Entrypoint script for Docker image
 
-INPUT_DIR="input"
+INPUT_DIR="$HOME/input"
 
 # wait for input data to finish downloading
 PREV=0
@@ -22,5 +22,4 @@ echo
 echo "Running command.sh..."
 echo
 
-cd $INPUT_DIR
-sh ./command.sh
+sh "$INPUT_DIR/command.sh"
