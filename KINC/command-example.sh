@@ -19,8 +19,8 @@ kinc settings set logging off
 
 # run similarity
 kinc run similarity \
-   --input $EMX_FILE \
-   --ccm $CCM_FILE \
-   --cmx $CMX_FILE \
-   --clusmethod $CLUSMETHOD \
-   --corrmethod $CORRMETHOD
+	--input $EMX_FILE \
+	--ccm $CCM_FILE \
+	--cmx $CMX_FILE \
+	--clusmethod $CLUSMETHOD \
+	--corrmethod $CORRMETHOD

@@ -3,38 +3,38 @@ MAINTAINER Ben Shealy <btsheal@clemson.edu>
 
 # install package dependencies
 RUN apt-get update \
-   && apt-get install -y wget xz-utils \
-   && apt-get install -y build-essential python gperf bison flex pkg-config libgl1-mesa-dev \
-   && apt-get install -y clinfo git libgsl-dev libopenblas-dev libopenmpi-dev ocl-icd-opencl-dev telnet
+	&& apt-get install -y wget xz-utils \
+	&& apt-get install -y build-essential python gperf bison flex pkg-config libgl1-mesa-dev \
+	&& apt-get install -y clinfo git libgsl-dev libopenblas-dev libopenmpi-dev ocl-icd-opencl-dev telnet
 
 # add NVIDIA platform to OpenCL
 RUN mkdir -p /etc/OpenCL/vendors \
-   && echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
+	&& echo "libnvidia-opencl.so.1" > /etc/OpenCL/vendors/nvidia.icd
 
 # install Qt
 RUN cd /opt \
-   && wget -q http://download.qt.io/official_releases/qt/5.11/5.11.1/single/qt-everywhere-src-5.11.1.tar.xz \
-   && tar -xf qt-everywhere-src-5.11.1.tar.xz \
-   && rm qt-everywhere-src-5.11.1.tar.xz \
-   && mkdir qt \
-   && cd qt \
-   && ../qt-everywhere-src-5.11.1/configure -prefix . -opensource -confirm-license \
-   && make -j 20 \
-   && make -j 20 install \
-   && rm -rf ../qt-everywhere-src-5.11.1
+	&& wget -q http://download.qt.io/official_releases/qt/5.11/5.11.1/single/qt-everywhere-src-5.11.1.tar.xz \
+	&& tar -xf qt-everywhere-src-5.11.1.tar.xz \
+	&& rm qt-everywhere-src-5.11.1.tar.xz \
+	&& mkdir qt \
+	&& cd qt \
+	&& ../qt-everywhere-src-5.11.1/configure -prefix . -opensource -confirm-license \
+	&& make -j 20 \
+	&& make -j 20 install \
+	&& rm -rf ../qt-everywhere-src-5.11.1
 
 ENV QTDIR  "/opt/qt"
 ENV PATH   "$QTDIR/bin:$PATH"
 
 # install ACE
 RUN cd /opt \
-   && git clone https://github.com/SystemsGenetics/ACE.git \
-   && cd ACE/build \
-   && git checkout develop \
-   && qmake ../src/ACE.pro PREFIX=/opt/ace \
-   && make -j 20 \
-   && make qmake_all \
-   && make install
+	&& git clone https://github.com/SystemsGenetics/ACE.git \
+	&& cd ACE/build \
+	&& git checkout develop \
+	&& qmake ../src/ACE.pro PREFIX=/opt/ace \
+	&& make -j 20 \
+	&& make qmake_all \
+	&& make install
 
 ENV ACEDIR              "/opt/ace"
 ENV PATH                "$ACEDIR/bin:$PATH"
@@ -44,13 +44,13 @@ ENV LD_LIBRARY_PATH     "$ACEDIR/lib:$LD_LIBRARY_PATH"
 
 # install KINC
 RUN cd /opt \
-   && git clone https://github.com/SystemsGenetics/KINC.git \
-   && cd KINC/build \
-   && git checkout develop \
-   && qmake ../src/KINC.pro PREFIX=/opt/kinc \
-   && make -j 20 \
-   && make qmake_all \
-   && make install
+	&& git clone https://github.com/SystemsGenetics/KINC.git \
+	&& cd KINC/build \
+	&& git checkout develop \
+	&& qmake ../src/KINC.pro PREFIX=/opt/kinc \
+	&& make -j 20 \
+	&& make qmake_all \
+	&& make install
 
 ENV KINCDIR  "/opt/kinc"
 ENV PATH     "$KINCDIR/bin:$PATH"

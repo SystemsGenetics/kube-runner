@@ -17,9 +17,9 @@ OUT_FILE="$OUTPUT_DIR/oncogenetic_classify_kfold10.log"
 cd $HOME/gene-oracle
 
 python scripts/classify.py \
-   --dataset     $DATASET \
-   --gene_list   $GENE_LIST \
-   --sample_json $SAMPLE_JSON \
-   --subset_list $SUBSET_LIST \
-   --config      $CONFIG \
-   --out_file    $OUT_FILE
+	--dataset     $DATASET \
+	--gene_list   $GENE_LIST \
+	--sample_json $SAMPLE_JSON \
+	--subset_list $SUBSET_LIST \
+	--config      $CONFIG \
+	--out_file    $OUT_FILE

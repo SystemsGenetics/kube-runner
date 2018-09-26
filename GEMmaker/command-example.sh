@@ -20,10 +20,10 @@ cd $HOME/GEMmaker
 mkdir ~/.irods
 cat > ~/.irods/irods_environment.json <<EOF
 {
-  "irods_host": "$IRODS_HOST",
-  "irods_port": $IRODS_PORT,
-  "irods_user_name": "$IRODS_USER_NAME",
-  "irods_zone_name": "$IRODS_ZONE_NAME"
+	"irods_host": "$IRODS_HOST",
+	"irods_port": $IRODS_PORT,
+	"irods_user_name": "$IRODS_USER_NAME",
+	"irods_zone_name": "$IRODS_ZONE_NAME"
 }
 EOF
 
@@ -37,10 +37,10 @@ iget -rv $EXPERIMENT_PATH experiment
 
 # run GEMmaker
 nextflow -config $CONFIG run main.nf \
-   -profile standard \
-   -with-report \
-   -with-timeline \
-   -with-trace
+	-profile standard \
+	-with-report \
+	-with-timeline \
+	-with-trace
 
 # move outputs to output directory
 mv report.html timeline.html trace.txt $OUTPUT_DIR
