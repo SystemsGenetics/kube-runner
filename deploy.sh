@@ -7,7 +7,6 @@ if [[ $# != 4 ]]; then
 	exit -1
 fi
 
-NAMESPACE="deepgtex-prp"
 POD_FILE="pod.yaml"
 POD_NAME="$1"
 IMAGE_NAME="$2"
@@ -36,6 +35,7 @@ for i in $(seq 1 $NUM_CONTAINERS); do
   - name: $CONTAINER_NAME
     image: $IMAGE_NAME
     imagePullPolicy: Always
+    args: ["sleep", "infinity"]
     resources:
       limits:
         nvidia.com/gpu: 1
@@ -54,8 +54,6 @@ echo
 kubectl create -f $POD_FILE
 echo
 
-# TODO: pod gets stuck in CrashLoopBackoff
-
 # Wait for pod to start
 POD_STATUS=""
 
@@ -71,11 +69,11 @@ kubectl get pod $POD_NAME
 echo
 
 # Copy input data and start each container
-for i in $(seq 1 $1); do
+for i in $(seq 1 $NUM_CONTAINERS); do
 	CONTAINER_NAME="$POD_NAME-$(printf "%03d" $i)"
 
 	echo "Copying input data to $CONTAINER_NAME..."
-	kubectl cp "$INPUT_DIR" "$NAMESPACE/$POD_NAME:/root/input" -c $CONTAINER_NAME &
+	kubectl cp "$INPUT_DIR" "$POD_NAME:/root/input" -c $CONTAINER_NAME &
 
 	echo "Starting $CONTAINER_NAME..."
 	kubectl exec "$POD_NAME" -c $CONTAINER_NAME -- /bin/bash -c "cd /root; ./run.sh" &
