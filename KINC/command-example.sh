@@ -18,9 +18,11 @@ kinc settings set threads 4
 kinc settings set logging off
 
 # run similarity
-kinc run similarity \
+kinc chunkrun $JOB_RANK $JOB_SIZE similarity \
 	--input $EMX_FILE \
 	--ccm $CCM_FILE \
 	--cmx $CMX_FILE \
 	--clusmethod $CLUSMETHOD \
 	--corrmethod $CORRMETHOD
+
+mv *.abd $OUTPUT_DIR

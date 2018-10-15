@@ -6,11 +6,11 @@ This repository provides resources for running various systems biology tools wit
 - [gene-oracle](https://github.com/ctargon/gene-oracle)
 - [KINC](https://github.com/SystemsGenetics/KINC)
 
-Additionally, each application can be deployed as a pod of _N_ Docker containers to a Kubernetes cluster using `kubectl`.
+Additionally, each application can be run as a job of _N_ Docker containers to a Kubernetes cluster using `kubectl`.
 
 ## Dependencies
 
-You need Docker to build and push Docker images, and [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) to test GPU-enabled Docker images on a local machine. To deploy a pod to a Kubernetes cluster, you need [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+You need Docker to build and push Docker images, and [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) to test GPU-enabled Docker images on a local machine. To interact with a Kubernetes cluster, you need [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
 
 ## Usage
 
@@ -43,7 +43,7 @@ sudo docker tag a88adcfb02de systemsgenetics/gemmaker:latest
 sudo docker push systemsgenetics/gemmaker:latest
 ```
 
-### Deploying to a Kubernetes cluster
+### Running on a Kubernetes cluster
 
 Once you install `kubectl`, you must save a configuration to `~/.kube/config`. For example, if you are using [Nautilus](https://nautilus.optiputer.net/) you can download the config file from the Nautilus dashboard by selecting "Get config".
 
@@ -52,39 +52,45 @@ Test your Kubernetes configuration:
 kubectl config view
 ```
 
-Before you deploy a pod, create a directory with the following:
+Before you run a job, create a directory with the following:
 - A script named `command.sh` that you want to run on each container
 - Any input data files that are to be copied to each container
 
-The script `deploy.sh` can automatically deploy a Docker image by (1) creating a pod configuration, (2) creating the pod, (3) copying input files to each container in the pod, and (4) executing each container in the pod. You must provide the following:
-- the name for your pod
-- the name of an image on DockerHub
-- the number of containers to run
+The script `kube-run.sh` can automatically run a Docker image by (1) creating a job configuration, (2) creating the job, (3) copying input files to each container in the job, (4) executing the command script on each container, and (5) copying output files from each container. You must provide the following:
+- the job name
+- the image you want to run
+- the number of work items
 - the path to your input directory
+- the path to your output directory
 
-Deploy a pod:
+Run a job:
 ```bash
-./deploy.sh <pod-name> <image-name> <num-containers> <input-dir>
+./kube-run.sh <job-name> <image-name> <job-size> <input-dir> <output-dir>
 ```
 
-Check the status of your pods:
+Check the status of your jobs:
 ```bash
-kubectl get pods
+kubectl get jobs
 ```
 
-Get information on a specific pod:
+Get information on a job:
+```bash
+kubectl describe job <job-name>
+```
+
+Get information on a pod:
 ```bash
 kubectl describe pod <pod-name>
 ```
 
-Copy output data from a pod that has finished:
+Get an interactive shell into a pod:
 ```bash
-./get-output.sh <pod-name> <num-containers> <output-dir>
+kubectl exec -it <pod-name> -- bash
 ```
 
-Delete a pod:
+Delete a job:
 ```bash
-kubectl delete pod <pod-name>
+kubectl delete job <job-name>
 ```
 
-__Always delete pods that are finished to return their resources to the cluster.__
+__Always delete jobs that are finished to return their resources to the cluster.__

@@ -10,7 +10,3 @@ RUN apt-get update \
 # install gene-oracle
 WORKDIR /root
 RUN git clone https://github.com/ctargon/gene-oracle
-
-# install Kubernetes entrypoint
-WORKDIR /root
-COPY ../run.sh run.sh
