@@ -1,10 +1,6 @@
 #!/bin/bash
 # Example command script for gene-oracle
 
-# define input/output directories
-INPUT_DIR="$HOME/input"
-OUTPUT_DIR="$HOME/output"
-
 # define arguments
 DATASET="$INPUT_DIR/gtex_gct_data_float_v7.npy"
 GENE_LIST="$INPUT_DIR/gtex_gene_list_v7.npy"

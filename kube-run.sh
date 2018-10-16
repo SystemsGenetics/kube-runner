@@ -85,7 +85,7 @@ i=0
 
 for POD_NAME in $PODS; do
 	echo "Executing command script on $POD_NAME..."
-	kubectl exec "$POD_NAME" -- bash -c "export JOB_RANK=$i JOB_SIZE=$JOB_SIZE; mkdir -p $REMOTE_OUTPUT; sh $REMOTE_INPUT/command.sh" &
+	kubectl exec "$POD_NAME" -- bash -c "export INPUT_DIR=$REMOTE_INPUT OUTPUT_DIR=$REMOTE_OUTPUT JOB_RANK=$i JOB_SIZE=$JOB_SIZE; mkdir -p $REMOTE_OUTPUT; sh $REMOTE_INPUT/command.sh" &
 
 	i=$((i + 1))
 done
@@ -99,3 +99,6 @@ for POD_NAME in $PODS; do
 	kubectl cp "$POD_NAME:$REMOTE_OUTPUT" "$LOCAL_OUTPUT/$POD_NAME" &
 done
 wait
+
+# delete job
+kubectl delete job $JOB_NAME

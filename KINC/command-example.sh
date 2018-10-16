@@ -1,16 +1,15 @@
 #!/bin/bash
 # Example command script for KINC
 
-# define input/output directories
-INPUT_DIR="$HOME/input"
-OUTPUT_DIR="$HOME/output"
-
 # define arguments
 EMX_FILE="$INPUT_DIR/Yeast.emx"
 CCM_FILE="$OUTPUT_DIR/Yeast.ccm"
 CMX_FILE="$OUTPUT_DIR/Yeast.cmx"
 CLUSMETHOD="none"
 CORRMETHOD="pearson"
+
+# move to output directory
+cd $OUTPUT_DIR
 
 # set kinc settings
 kinc settings set opencl 0:0
@@ -24,5 +23,3 @@ kinc chunkrun $JOB_RANK $JOB_SIZE similarity \
 	--cmx $CMX_FILE \
 	--clusmethod $CLUSMETHOD \
 	--corrmethod $CORRMETHOD
-
-mv *.abd $OUTPUT_DIR

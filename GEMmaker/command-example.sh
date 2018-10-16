@@ -1,10 +1,6 @@
 #!/bin/bash
 # Example command script for GEMmaker
 
-# define input/output directories
-INPUT_DIR="$HOME/input"
-OUTPUT_DIR="$HOME/output"
-
 # define arguments
 IRODS_HOST="FULLY.QUALIFIED.DOMAIN.NAME"
 IRODS_PORT=1247
