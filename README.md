@@ -1,12 +1,10 @@
-# docker-tools
+# kube-runner
 
-This repository provides resources for running various systems biology tools with Kubernetes. This repository contains Docker resources for the following applications:
+This repository provides a tool for running bioinformatics workflows as jobs on a Kubernetes cluster. This repository also contains Docker resources for several applications:
 
 - [GEMmaker](https://github.com/SystemsGenetics/GEMmaker)
 - [gene-oracle](https://github.com/ctargon/gene-oracle)
 - [KINC](https://github.com/SystemsGenetics/KINC)
-
-Additionally, each application can be run as a job of _N_ Docker containers to a Kubernetes cluster using `kubectl`.
 
 ## Dependencies
 
