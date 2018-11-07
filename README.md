@@ -41,7 +41,7 @@ sudo docker tag a88adcfb02de systemsgenetics/gemmaker:latest
 sudo docker push systemsgenetics/gemmaker:latest
 ```
 
-### Running on a Kubernetes cluster
+### Running a Job on a Kubernetes cluster
 
 Once you install `kubectl`, you must save a configuration to `~/.kube/config`. For example, if you are using [Nautilus](https://nautilus.optiputer.net/) you can download the config file from the Nautilus dashboard by selecting "Get config".
 
@@ -65,6 +65,19 @@ Run a job:
 ```bash
 ./kube-run.sh <job-name> <image-name> <job-size> <input-dir> <output-dir>
 ```
+
+Additionally, you can use the `nodeSelector` property in the job configuration file to select specific nodes by their properties, for example:
+```yaml
+nodeSelector:
+  disktype: ssd
+```
+
+Note that labels are arbitrary and will vary for a given Kubernetes cluster. To see how labels are assigned to nodes on your cluster:
+```bash
+kubectl get nodes --show-labels
+```
+
+### Additional Commands
 
 Check the status of your jobs:
 ```bash
@@ -91,4 +104,4 @@ Delete a job:
 kubectl delete job <job-name>
 ```
 
-__Always delete jobs that are finished to return their resources to the cluster.__
+__Always delete jobs/pods that are finished to return their resources to the cluster.__

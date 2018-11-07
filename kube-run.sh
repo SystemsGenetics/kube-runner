@@ -16,9 +16,6 @@ LOCAL_OUTPUT="$5"
 REMOTE_INPUT="/root/input"
 REMOTE_OUTPUT="/root/output"
 
-# TODO: Add "nodeSelector" attribute to deploy on specific nodes
-#       https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
-
 # write job config to file
 cat > $JOB_CONFIG <<EOF
 apiVersion: batch/v1
@@ -40,6 +37,7 @@ spec:
             cpu: 4
             memory: "4Gi"
             nvidia.com/gpu: 1
+      nodeSelector: {}
       restartPolicy: Never
   backoffLimit: 4
 EOF
@@ -96,9 +94,8 @@ mkdir -p $LOCAL_OUTPUT
 
 for POD_NAME in $PODS; do
 	echo "Copying output data from $POD_NAME..."
-	kubectl cp "$POD_NAME:$REMOTE_OUTPUT" "$LOCAL_OUTPUT/$POD_NAME" &
+	kubectl cp "$POD_NAME:$REMOTE_OUTPUT" "$LOCAL_OUTPUT/$POD_NAME"
 done
-wait
 
 # delete job
 kubectl delete job $JOB_NAME
