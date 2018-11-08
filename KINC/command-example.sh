@@ -8,13 +8,11 @@ CMX_FILE="$OUTPUT_DIR/Yeast.cmx"
 CLUSMETHOD="none"
 CORRMETHOD="pearson"
 
-# move to output directory
-cd $OUTPUT_DIR
-
 # set kinc settings
 kinc settings set opencl 0:0
 kinc settings set threads 4
-kinc settings set logging off
+kinc settings set chunkdir $OUTPUT_DIR
+kinc settings set logging on
 
 # run similarity
 kinc chunkrun $JOB_RANK $JOB_SIZE similarity \
@@ -22,4 +20,7 @@ kinc chunkrun $JOB_RANK $JOB_SIZE similarity \
 	--ccm $CCM_FILE \
 	--cmx $CMX_FILE \
 	--clusmethod $CLUSMETHOD \
-	--corrmethod $CORRMETHOD
+	--corrmethod $CORRMETHOD &
+
+sleep 1
+acelog localhost:40000

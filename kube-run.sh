@@ -67,6 +67,9 @@ done
 # get list of pod names
 PODS=$(kubectl get pods --selector=job-name=$JOB_NAME --output=jsonpath={.items..metadata.name})
 
+# display pod-node assignments
+kubectl get pods -o wide --sort-by="{.spec.nodeName}"
+
 # copy input data to each pod
 i=0
 
@@ -76,7 +79,7 @@ for POD_NAME in $PODS; do
 
 	i=$((i + 1))
 done
-wait
+time wait
 
 # execute command script on each pod
 i=0
@@ -87,7 +90,7 @@ for POD_NAME in $PODS; do
 
 	i=$((i + 1))
 done
-wait
+time wait
 
 # copy output data from each pod
 mkdir -p $LOCAL_OUTPUT
