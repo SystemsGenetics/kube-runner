@@ -12,4 +12,4 @@ PREFIX="$(dirname $INFILE)/$(basename $INFILE txt)"
 SUFFIX=".txt"
 
 # split text file into chunks
-split --additional-suffix $SUFFIX -d -n $NUM_FILES $INFILE $PREFIX
+split --additional-suffix $SUFFIX -d -n r/$NUM_FILES $INFILE $PREFIX
