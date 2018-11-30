@@ -84,6 +84,11 @@ Check the status of your jobs:
 kubectl get jobs
 ```
 
+Check the status of your pods:
+```bash
+kubectl get pods -o wide
+```
+
 Get information on a job:
 ```bash
 kubectl describe job <job-name>
