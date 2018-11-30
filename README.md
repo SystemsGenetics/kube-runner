@@ -43,7 +43,7 @@ sudo docker push systemsgenetics/gemmaker:latest
 
 ### Running a Job on a Kubernetes cluster
 
-Once you install `kubectl`, you must save a configuration to `~/.kube/config`. For example, if you are using [Nautilus](https://nautilus.optiputer.net/) you can download the config file from the Nautilus dashboard by selecting "Get config".
+Once you install `kubectl`, you must save a configuration to `~/.kube/config`. For example, if you are using [Nautilus](https://nautilus.optiputer.net/) you can download the config file from the Nautilus dashboard by selecting "Get config". Note that authentication tokens for the NRP expire so you will need to download a new config file periodically.
 
 Test your Kubernetes configuration:
 ```bash
