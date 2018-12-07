@@ -35,7 +35,7 @@ spec:
         resources:
           limits:
             cpu: 4
-            memory: "4Gi"
+            memory: "8Gi"
             nvidia.com/gpu: 1
       nodeSelector: {}
       restartPolicy: Never
@@ -86,7 +86,7 @@ i=0
 
 for POD_NAME in $PODS; do
 	echo "Executing command script on $POD_NAME..."
-	kubectl exec "$POD_NAME" -- bash -c "export INPUT_DIR=$REMOTE_INPUT OUTPUT_DIR=$REMOTE_OUTPUT JOB_RANK=$i JOB_SIZE=$JOB_SIZE; mkdir -p $REMOTE_OUTPUT; sh $REMOTE_INPUT/command.sh" &
+	kubectl exec "$POD_NAME" -- bash -c "export INPUT_DIR=$REMOTE_INPUT OUTPUT_DIR=$REMOTE_OUTPUT JOB_RANK=$i JOB_SIZE=$JOB_SIZE; mkdir -p $REMOTE_OUTPUT; bash $REMOTE_INPUT/command.sh" &
 
 	i=$((i + 1))
 done
