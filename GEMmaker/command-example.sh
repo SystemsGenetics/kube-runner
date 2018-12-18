@@ -6,7 +6,8 @@ IRODS_HOST="FULLY.QUALIFIED.DOMAIN.NAME"
 IRODS_PORT=1247
 IRODS_USER_NAME="USERNAME"
 IRODS_ZONE_NAME="scidasZone"
-EXPERIMENT_PATH="/scidasZone/sysbio/experiments/sra2gev/test"
+IRODS_INPUT_PATH="/scidasZone/sysbio/experiments/sra2gev/test"
+IRODS_OUTPUT_PATH="/scidasZone/sysbio/experiments/test"
 CONFIG="$INPUT_DIR/nextflow.config"
 
 # change to GEMmaker directory
@@ -23,13 +24,10 @@ cat > ~/.irods/irods_environment.json <<EOF
 }
 EOF
 
-# initialize iRODS
-iinit
-
 # download experiment files from iRODS
 echo "Downloading experiment files..."
 
-iget -rv $EXPERIMENT_PATH experiment
+./scripts/irods-load.sh $IRODS_INPUT_PATH input
 
 # run GEMmaker
 nextflow -config $CONFIG run main.nf \
@@ -38,6 +36,5 @@ nextflow -config $CONFIG run main.nf \
 	-with-timeline \
 	-with-trace
 
-# move outputs to output directory
-mv report.html timeline.html trace.txt $OUTPUT_DIR
-mv SRX* Sample_* $OUTPUT_DIR
+# save output data to iRODS
+./scripts/irods-save.sh output $IRODS_OUTPUT_PATH
