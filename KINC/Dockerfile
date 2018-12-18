@@ -30,7 +30,7 @@ ENV PATH   "$QTDIR/bin:$PATH"
 RUN cd /opt \
 	&& git clone https://github.com/SystemsGenetics/ACE.git \
 	&& cd ACE/build \
-	&& git checkout develop \
+	&& git checkout v3.0.2 \
 	&& qmake ../src/ACE.pro PREFIX=/opt/ace \
 	&& make -j 20 \
 	&& make qmake_all \
@@ -46,7 +46,7 @@ ENV LD_LIBRARY_PATH     "$ACEDIR/lib:$LD_LIBRARY_PATH"
 RUN cd /opt \
 	&& git clone https://github.com/SystemsGenetics/KINC.git \
 	&& cd KINC/build \
-	&& git checkout develop \
+	&& git checkout v3.2.2 \
 	&& qmake ../src/KINC.pro PREFIX=/opt/kinc \
 	&& make -j 20 \
 	&& make qmake_all \
