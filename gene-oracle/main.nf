@@ -17,7 +17,7 @@ process split {
 
 	script:
 		"""
-		split -d -n r/${params.chunks} $infile ""
+		split -d -n l/${params.chunks} $infile ""
 		"""
 }
 
