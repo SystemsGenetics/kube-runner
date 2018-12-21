@@ -16,8 +16,6 @@ process import_emx {
 		"""
 		EMX_FILE="\$(basename ${params.dataset} .txt).emx"
 
-		kinc settings set opencl 0:0  || echo
-		kinc settings set threads 4   || echo
 		kinc settings set logging off || echo
 
 		kinc run import-emx \
@@ -43,6 +41,10 @@ process similarity {
 
 	script:
 		"""
+		kinc settings set opencl 0:0  || echo
+		kinc settings set threads 4   || echo
+		kinc settings set logging off || echo
+
 		kinc chunkrun ${index} ${params.chunks} similarity \
 			--input ${emx_file} \
 			--clusmethod ${params.clus_method} \
@@ -79,6 +81,8 @@ process merge {
 		CCM_FILE="\$(basename ${params.dataset} .txt).ccm"
 		CMX_FILE="\$(basename ${params.dataset} .txt).cmx"
 
+		kinc settings set logging off || echo
+
 		kinc merge ${params.chunks} similarity \
 			--input ${emx_file} \
 			--ccm \$CCM_FILE \
@@ -112,6 +116,8 @@ process threshold {
 		"""
 		LOG_FILE="\$(basename ${params.dataset} .txt)-threshold.log"
 
+		kinc settings set logging off || echo
+
 		kinc run rmt \
 			--input ${cmx_file} \
 			--log \$LOG_FILE
@@ -140,6 +146,8 @@ process extract {
 		"""
 		NET_FILE="\$(basename ${params.dataset} .txt)-net.txt"
 		THRESHOLD=\$(tail -n 1 ${log_file})
+
+		kinc settings set logging off || echo
 
 		kinc run extract \
 		   --emx ${emx_file} \
