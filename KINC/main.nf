@@ -12,6 +12,8 @@ process import_emx {
 	output:
 		file("*.emx") into EMX_FILE
 
+	when: params.run_import_emx == true
+
 	script:
 		"""
 		EMX_FILE="\$(basename ${params.dataset} .txt).emx"
@@ -38,6 +40,8 @@ process similarity {
 
 	output:
 		set val(emx_file.name), file("*.abd") into SIMILARITY_CHUNKS
+
+	when: params.run_similarity == true
 
 	script:
 		"""
@@ -112,6 +116,8 @@ process threshold {
 	output:
 		file("*-threshold.log") into THRESHOLD_LOG
 
+	when: params.run_threshold == true
+
 	script:
 		"""
 		LOG_FILE="\$(basename ${params.dataset} .txt)-threshold.log"
@@ -141,6 +147,8 @@ process extract {
 
 	output:
 		file("*-net.txt")
+
+	when: params.run_extract == true
 
 	script:
 		"""
