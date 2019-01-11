@@ -1,6 +1,6 @@
 # kube-runner
 
-This repository provides a tool for running bioinformatics workflows as jobs on a Kubernetes cluster. This repository also contains Docker resources for several applications:
+This repository provides a tool for running bioinformatics workflows as jobs on a Kubernetes cluster. This repository also contains some examples for several applications:
 
 - [GEMmaker](https://github.com/SystemsGenetics/GEMmaker)
 - [gene-oracle](https://github.com/ctargon/gene-oracle)
@@ -16,13 +16,12 @@ You need Docker to build and push Docker images, and [nvidia-docker](https://git
 
 Build a Docker image:
 ```bash
-cd <app-directory>
-sudo docker build -t <tag> -f <Dockerfile> .
+sudo docker build -t <tag> <build-directory>
 ```
 
 Run a Docker container (locally):
 ```bash
-sudo docker run [--runtime=nvidia] --rm -it <tag>
+sudo docker run [--runtime=nvidia] --rm -it <tag> <command>
 ```
 
 List the Docker images on your machine:
