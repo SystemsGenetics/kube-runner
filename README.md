@@ -1,96 +1,99 @@
 # kube-runner
 
-This repository provides a tool for running bioinformatics workflows as jobs on a Kubernetes cluster. This repository also contains some examples for several applications:
+This repository provides scripts for running nextflow pipelines on a Kubernetes cluster. These scripts have been tested for the following pipelines:
 
-- [GEMmaker](https://github.com/SystemsGenetics/GEMmaker)
-- [gene-oracle](https://github.com/ctargon/gene-oracle)
-- [KINC](https://github.com/SystemsGenetics/KINC)
+- [SystemsGenetics/GEMmaker](https://github.com/SystemsGenetics/GEMmaker)
+- [bentsherman/gene-oracle-nf](https://github.com/bentsherman/gene-oracle-nf)
+- [bentsherman/KINC-nf](https://github.com/bentsherman/KINC-nf)
 
 ## Dependencies
 
-You need Docker to build and push Docker images, and [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) to test GPU-enabled Docker images on a local machine. To interact with a Kubernetes cluster, you need [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/).
+To get started, all you need is [nextflow](https://nextflow.io/), [kubectl](https://kubernetes.io/docs/tasks/tools/install-kubectl/), and access to a Kubernetes cluster (in the form of `~/.kube/config`). If you want to test Docker images on your local machine, you will also need [docker](https://docker.com/) and [nvidia-docker](https://github.com/NVIDIA/nvidia-docker) (for GPU-enabled Docker images).
+
+## Configuration
+
+There are a few administrative tasks which must be done in order for nextflow to be able to run properly on the Kubernetes cluster. These tasks only need to be done once, but they may require administrative access to the cluster, so you may need your system administrator to handle this part for you.
+
+- Nextflow needs a service account with the `edit` and `view` cluster roles:
+```bash
+kubectl create rolebinding default-edit --clusterrole=edit --serviceaccount=<namespace>:default 
+kubectl create rolebinding default-view --clusterrole=view --serviceaccount=<namespace>:default
+```
+
+- Nextflow needs access to shared storage in the form of a [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) (PVC) with `ReadWriteMany` access mode. The process for provisioning a PVC depends on what types of storage is available. The `kube-create-pvc.sh` script provides an example of creating a PVC for CephFS storage, but it may not apply to your particular cluster. Consult your system administrator for assistance if necessary.
 
 ## Usage
 
-### Creating a Docker image
+First you must transfer your input data from your local machine to the cluster. You can use the `kube-load.sh` script to do this:
+```bash
+./kube-load.sh <pvc-name> <input-dir>
+```
+
+Then you can run the pipeline using nextflow's `kuberun` command:
+```bash
+nextflow kuberun <pipeline>
+```
+
+__NOTE__: If you create your own `nextflow.config` in your current directory then nextflow will use that config file instead of the default.
+
+Once the pipeline finishes successfully, you can transfer your output data from the cluster using `kube-save.sh`:
+```bash
+./kube-save.sh <pvc-name> <output-dir>
+```
+
+You can also use nextflow to create an interactive terminal on the cluster where you can access your PVC directly:
+```bash
+nextflow kuberun login
+```
+
+Consult the [Nextflow Kubernetes documentation](https://www.nextflow.io/docs/latest/kubernetes.html) for more information.
+
+## Appendix
+
+### Working with Docker images
+
+__NOTE__: Generally speaking, Docker requires admin privileges in order to run. On Linux, for example, you may need to run Docker commands with `sudo`.
 
 Build a Docker image:
 ```bash
-sudo docker build -t <tag> <build-directory>
+docker build -t <tag> <build-directory>
 ```
 
-Run a Docker container (locally):
+Run a Docker container:
 ```bash
-sudo docker run [--runtime=nvidia] --rm -it <tag> <command>
+docker run [--runtime=nvidia] --rm -it <tag> <command>
 ```
 
 List the Docker images on your machine:
 ```bash
-sudo docker images
+docker images
 ```
 
-Push a Docker image to DockerHub:
+Push a Docker image to Docker Hub:
 ```bash
-sudo docker push <tag>
+docker push <tag>
 ```
 
-NOTE: In order to push an image to DockerHub, the image must be tagged with both a username and a repo name. For example:
+Remove old Docker data:
 ```bash
-sudo docker tag a88adcfb02de systemsgenetics/gemmaker:latest
-sudo docker push systemsgenetics/gemmaker:latest
+docker system prune
 ```
 
-### Running a Job on a Kubernetes cluster
-
-Once you install `kubectl`, you must save a configuration to `~/.kube/config`. For example, if you are using [Nautilus](https://nautilus.optiputer.net/) you can download the config file from the Nautilus dashboard by selecting "Get config". Note that authentication tokens for the NRP expire so you will need to download a new config file periodically.
+### Interacting with a Kubernetes cluster
 
 Test your Kubernetes configuration:
 ```bash
 kubectl config view
 ```
 
-Before you run a job, create a directory with the following:
-- A script named `command.sh` that you want to run on each container
-- Any input data files that are to be copied to each container
-
-The script `kube-run.sh` can automatically run a Docker image by (1) creating a job configuration, (2) creating the job, (3) copying input files to each container in the job, (4) executing the command script on each container, and (5) copying output files from each container. You must provide the following:
-- the job name
-- the image you want to run
-- the number of work items
-- the path to your input directory
-- the path to your output directory
-
-Run a job:
-```bash
-./kube-run.sh <job-name> <image-name> <job-size> <input-dir> <output-dir>
-```
-
-Additionally, you can use the `nodeSelector` property in the job configuration file to select specific nodes by their properties, for example:
-```yaml
-nodeSelector:
-  disktype: ssd
-```
-
-Note that labels are arbitrary and will vary for a given Kubernetes cluster. To see how labels are assigned to nodes on your cluster:
+View the physical nodes on your cluster:
 ```bash
 kubectl get nodes --show-labels
-```
-
-### Additional Commands
-
-Check the status of your jobs:
-```bash
-kubectl get jobs
 ```
 
 Check the status of your pods:
 ```bash
 kubectl get pods -o wide
-```
-
-Get information on a job:
-```bash
-kubectl describe job <job-name>
 ```
 
 Get information on a pod:
@@ -103,9 +106,7 @@ Get an interactive shell into a pod:
 kubectl exec -it <pod-name> -- bash
 ```
 
-Delete a job:
+Delete a pod:
 ```bash
-kubectl delete job <job-name>
+kubectl delete pod <pod-name>
 ```
-
-__Always delete jobs/pods that are finished to return their resources to the cluster.__
