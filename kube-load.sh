@@ -34,30 +34,22 @@ spec:
         claimName: $PVC_NAME
 EOF
 
-echo
-cat $POD_FILE
-echo
-
 # create pod
-echo
 kubectl create -f $POD_FILE
-echo
 
 # wait for pod to initialize
 POD_STATUS=""
 
 while [[ $POD_STATUS != "Running" ]]; do
-	echo "Waiting for pod to initialize...$POD_STATUS"
 	sleep 1
 	POD_STATUS="$(kubectl get pods --no-headers $POD_NAME | awk '{ print $3 }')"
 	POD_STATUS="$(echo $POD_STATUS)"
 done
 
 # copy input data to pod
-echo "Copying data..."
-echo
+echo "copying data..."
+
 kubectl cp "$LOCAL_PATH" "$POD_NAME:$PVC_PATH/$(basename $LOCAL_PATH)"
-echo
 
 # delete pod
 kubectl delete -f $POD_FILE
