@@ -24,9 +24,16 @@ kubectl create rolebinding default-view --clusterrole=view --serviceaccount=<nam
 
 ## Usage
 
+It is recommended that you create a separate directory for each pipeline that you use, for example:
+```bash
+mkdir KINC
+cd KINC
+../kube-load.sh [...]
+```
+
 First you must transfer your input data from your local machine to the cluster. You can use the `kube-load.sh` script to do this:
 ```bash
-./kube-load.sh <pvc-name> <input-dir>
+../kube-load.sh <pvc-name> <input-dir>
 ```
 
 Then you can run the pipeline using nextflow's `kuberun` command:
@@ -38,7 +45,7 @@ __NOTE__: If you create your own `nextflow.config` in your current directory the
 
 Once the pipeline finishes successfully, you can transfer your output data from the cluster using `kube-save.sh`:
 ```bash
-./kube-save.sh <pvc-name> <output-dir>
+../kube-save.sh <pvc-name> <output-dir>
 ```
 
 You can also use nextflow to create an interactive terminal on the cluster where you can access your PVC directly:
