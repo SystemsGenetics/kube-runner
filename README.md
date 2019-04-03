@@ -38,7 +38,7 @@ First you must transfer your input data from your local machine to the cluster. 
 
 Then you can run the pipeline using nextflow's `kuberun` command:
 ```bash
-nextflow kuberun <pipeline>
+nextflow [-C nextflow.config] kuberun <pipeline>
 ```
 
 __NOTE__: If you create your own `nextflow.config` in your current directory then nextflow will use that config file instead of the default.
@@ -59,7 +59,7 @@ Consult the [Nextflow Kubernetes documentation](https://www.nextflow.io/docs/lat
 
 ### Working with Docker images
 
-__NOTE__: Generally speaking, Docker requires admin privileges in order to run. On Linux, for example, you may need to run Docker commands with `sudo`.
+__NOTE__: Generally speaking, Docker requires admin privileges in order to run. On Linux, for example, you may need to run Docker commands with `sudo`. Alternatively, if you add your user to the `docker` group then you will be able to run `docker` without `sudo`.
 
 Build a Docker image:
 ```bash
