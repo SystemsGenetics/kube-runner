@@ -8,7 +8,7 @@ if [[ $# != 2 ]]; then
 fi
 
 PVC_NAME="$1"
-PVC_PATH="$PWD"
+PVC_PATH="/workspace"
 POD_FILE="pod.yaml"
 POD_NAME="data-saver"
 REMOTE_PATH="$2"
@@ -49,8 +49,8 @@ done
 # copy output data from pod
 echo "copying data..."
 
-kubectl exec $POD_NAME -- bash -c "for f in \$(find $PVC_PATH/$REMOTE_PATH -type l); do cp --remove-destination \$(readlink \$f) \$f; done"
-kubectl cp "$POD_NAME:$PVC_PATH/$REMOTE_PATH" "$(basename $REMOTE_PATH)"
+kubectl exec $POD_NAME -- bash -c "for f in \$(find $PVC_PATH/$USER/$REMOTE_PATH -type l); do cp --remove-destination \$(readlink \$f) \$f; done"
+kubectl cp "$POD_NAME:$PVC_PATH/$USER/$REMOTE_PATH" "$(basename $REMOTE_PATH)"
 
 # delete pod
 kubectl delete -f $POD_FILE

@@ -8,7 +8,7 @@ if [[ $# != 2 ]]; then
 fi
 
 PVC_NAME="$1"
-PVC_PATH="$PWD"
+PVC_PATH="/workspace"
 POD_FILE="pod.yaml"
 POD_NAME="data-loader"
 LOCAL_PATH="$(realpath $2)"
@@ -49,7 +49,7 @@ done
 # copy input data to pod
 echo "copying data..."
 
-kubectl cp "$LOCAL_PATH" "$POD_NAME:$PVC_PATH/$(basename $LOCAL_PATH)"
+kubectl cp "$LOCAL_PATH" "$POD_NAME:$PVC_PATH/$USER/$(basename $LOCAL_PATH)"
 
 # delete pod
 kubectl delete -f $POD_FILE
