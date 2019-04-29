@@ -5,6 +5,7 @@ This repository provides scripts for running nextflow pipelines on a Kubernetes 
 - [SystemsGenetics/GEMmaker](https://github.com/SystemsGenetics/GEMmaker)
 - [SystemsGenetics/gene-oracle-nf](https://github.com/SystemsGenetics/gene-oracle-nf)
 - [SystemsGenetics/KINC-nf](https://github.com/SystemsGenetics/KINC-nf)
+- (In Progress) [ebenz99/MPCM-Nextflow] (https://github.com/ebenz99/MPCM-Nextflow) 
 
 ## Dependencies
 
