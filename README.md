@@ -1,6 +1,6 @@
 # kube-runner
 
-This repository provides scripts for running nextflow pipelines on a Kubernetes cluster. These scripts have been tested for the following pipelines:
+This repository provides tools and instructions for running nextflow pipelines on a Kubernetes cluster. These scripts have been tested for the following pipelines:
 
 - [SystemsGenetics/GEMmaker](https://github.com/SystemsGenetics/GEMmaker)
 - [SystemsGenetics/gene-oracle-nf](https://github.com/SystemsGenetics/gene-oracle-nf)
@@ -23,40 +23,36 @@ kubectl create rolebinding default-edit --clusterrole=edit --serviceaccount=<nam
 kubectl create rolebinding default-view --clusterrole=view --serviceaccount=<namespace>:default
 ```
 
-- Nextflow needs access to shared storage in the form of a [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) (PVC) with `ReadWriteMany` access mode. The process for provisioning a PVC depends on what types of storage is available. The `kube-create-pvc.sh` script provides an example of creating a PVC for CephFS storage, but it may not apply to your particular cluster. Consult your system administrator for assistance if necessary.
+- Nextflow needs access to shared storage in the form of a [Persistent Volume Claim](https://kubernetes.io/docs/concepts/storage/persistent-volumes/) (PVC) with `ReadWriteMany` access mode. The process for provisioning a PVC depends on what types of storage is available. The `kube-create-pvc.sh` script provides an example of creating a PVC for CephFS storage, but it may not apply to your particular cluster. Consult your system administrator for assistance if necessary. There may already be a PVC available for you. You can check using the following command:
+```bash
+kubectl get pvc
+```
+
+__NOTE__: If you are a user of the NRP from the Feltus lab, there is already a PVC available for you called `deepgtex-prp`.
 
 ## Usage
 
-It is recommended that you create a separate directory for each pipeline that you use, for example:
+Consult the `examples` folder for examples of running nextflow pipelines on a Kubernetes cluster. Consult the [Nextflow Kubernetes documentation](https://www.nextflow.io/docs/latest/kubernetes.html) for more general information on using Nextflow and Kubernetes together.
+
+This repository provides two scripts, `kube-load.sh` and `kube-save.sh`, for transferring data between your local machine and your Kubernetes cluster. In general, to run a nextflow pipeline with Kubernetes, you will need to transfer your input data beforehand using `kube-load.sh` and transfer your output data afterward using `kube-save.sh`:
+
 ```bash
-mkdir KINC
-cd KINC
-../kube-load.sh [...]
+./kube-load.sh <pvc-name> <input-dir>
+
+nextflow kuberun <pipeline> -v <pvc-name>
+
+./kube-save.sh <pvc-name> <output-dir>
 ```
 
-First you must transfer your input data from your local machine to the cluster. You can use the `kube-load.sh` script to do this:
+As you run pipelines, nextflow will create pods to perform the work. Some pods may not be properly cleaned up due to errors or other issues, therefore it is important to clean up your pods periodically. You can list all of the pods in your namespace using `kubectl`:
 ```bash
-../kube-load.sh <pvc-name> <input-dir>
+kubectl get pods
 ```
 
-Then you can run the pipeline using nextflow's `kuberun` command:
+You can use the `kube-clean.sh` script in this repository to clean up dangling pods:
 ```bash
-nextflow [-C nextflow.config] kuberun <pipeline>
+./kube-clean.sh
 ```
-
-__NOTE__: If you create your own `nextflow.config` in your current directory then nextflow will use that config file instead of the default.
-
-Once the pipeline finishes successfully, you can transfer your output data from the cluster using `kube-save.sh`:
-```bash
-../kube-save.sh <pvc-name> <output-dir>
-```
-
-You can also use nextflow to create an interactive terminal on the cluster where you can access your PVC directly:
-```bash
-nextflow kuberun login
-```
-
-Consult the [Nextflow Kubernetes documentation](https://www.nextflow.io/docs/latest/kubernetes.html) for more information.
 
 ## Appendix
 
@@ -120,3 +116,17 @@ Delete a pod:
 ```bash
 kubectl delete pod <pod-name>
 ```
+
+### Using Nextflow with Kubernetes
+
+Create a pod with an interactive terminal on a Kubernetes cluster:
+```bash
+nextflow kuberun login -v <pvc-name>
+```
+
+Run a nextflow pipeline on a Kubernetes cluster:
+```bash
+nextflow [-C nextflow.config] kuberun <pipeline> -v <pvc-name>
+```
+
+__NOTE__: If you create your own `nextflow.config` in your current directory then nextflow will use that config file instead of the default.
