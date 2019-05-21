@@ -44,6 +44,11 @@ nextflow kuberun <pipeline> -v <pvc-name>
 ./kube-save.sh <pvc-name> <output-dir>
 ```
 
+The `nextflow kuberun` command will automatically create a pod that runs your pipeline. Alternatively, you can provide your own pod spec. The `kube-run.sh` script can generate a pod spec and launch it using the same parameters as `nextflow kuberun`:
+```bash
+./kube-run.sh <pipeline> <pvc-name> <pod-name>
+```
+
 As you run pipelines, nextflow will create pods to perform the work. Some pods may not be properly cleaned up due to errors or other issues, therefore it is important to clean up your pods periodically. You can list all of the pods in your namespace using `kubectl`:
 ```bash
 kubectl get pods
