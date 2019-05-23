@@ -17,7 +17,9 @@ mv Yeast.txt kinc/input
 cd kinc
 ```
 
-For this example we will assume that you already have a Persistent Volume Claim (PVC) which is referred to as `<pvc-name>` in this example. The PVC gives you access to shared storage on your Kubernetes cluster, and it should be set up by the cluster administrator. Nextflow will mount this shared storage as `/workspace`, and within that you will use a directory for your username. To initialize these directories, use Nextflow to get an interactive node on your cluster:
+For this example we will assume that you already have a Persistent Volume Claim (PVC) which is referred to as `<pvc-name>` in this example. The PVC gives you access to shared storage on your Kubernetes cluster, and it should be set up by the cluster administrator. Nextflow will mount this shared storage as `/workspace`, and within that you will use a directory for your username.
+
+To see this directory structure, use Nextflow to get an interactive node on your cluster:
 ```bash
 nextflow kuberun login -v <pvc-name>
 ```
