@@ -1,10 +1,10 @@
 # KINC-nf on Kubernetes
 
-In this example you will use the [SystemsGenetics/KINC-nf](https://github.com/SystemsGenetics/KINC-nf) pipeline to create a gene co-expression network (GCN) for the Yeast dataset, on a Kubernetes cluster. You need access to a Kubernetes cluster as well as the Yeast GEM to do this example.
+In this example you will use the [KINC-nf](https://github.com/SystemsGenetics/KINC-nf) pipeline to create a gene co-expression network (GCN) for the Yeast dataset, on a Kubernetes cluster. You need access to a Kubernetes cluster as well as the Yeast GEM to do this example.
 
 ## Getting Started
 
-It is recommended that you create a separate directory for each pipeline that you use, so that your data and nextflow metadata are kept separate:
+It is recommended that you create a separate directory for each pipeline that you use, so that the data and nextflow metadata for each pipeline are separate:
 ```bash
 # initialize KINC directory
 mkdir kinc
