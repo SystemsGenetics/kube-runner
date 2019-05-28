@@ -46,8 +46,11 @@ nextflow kuberun <pipeline> -v <pvc-name>
 
 The `nextflow kuberun` command will automatically create a pod that runs your pipeline. Alternatively, you can provide your own pod spec. The `kube-run.sh` script can generate a pod spec and launch it using the same parameters as `nextflow kuberun`:
 ```bash
+# transfer local nextflow.config if necessary
+./kube-load.sh <pvc-name> nextflow.config
+
 # launch pod
-./kube-run.sh <pipeline> <pvc-name> <pod-name>
+./kube-run.sh <pipeline> <pvc-name> <run-name>
 
 # stream pod output
 kubectl logs -f <pod-name>
