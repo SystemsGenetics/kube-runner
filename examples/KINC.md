@@ -37,7 +37,7 @@ Before running the pipeline, you must transfer your input data from your local m
 
 Then you can run the pipeline using nextflow's `kuberun` command:
 ```bash
-nextflow kuberun <pipeline> -v <pvc-name>
+nextflow kuberun systemsgenetics/KINC-nf -v <pvc-name>
 ```
 
 ## Transfer Output Data
