@@ -54,6 +54,10 @@ The `nextflow kuberun` command will automatically create a pod that runs your pi
 
 # stream pod output
 kubectl logs -f <pod-name>
+
+# delete pod after it finishes
+kubectl delete pod <run-name>
+kubectl delete configmap <run-name>
 ```
 
 As you run pipelines, nextflow will create pods to perform the work. Some pods may not be properly cleaned up due to errors or other issues, therefore it is important to clean up your pods periodically. You can list all of the pods in your namespace using `kubectl`:
