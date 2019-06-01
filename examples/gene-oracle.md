@@ -4,9 +4,9 @@ In this example you will use the [gene-oracle](https://github.com/SystemsGenetic
 
 ## Getting Started
 
-We will use the `make-classification.py` script in the gene-oracle repo to generate a "fake GEM" and a list of gene sets for that GEM. Clone the gene-oracle repo to your local machine, and then run the script:
+We will use the `make-input-data.py` script in the gene-oracle repo to generate a "fake GEM" and a list of gene sets for that GEM. Clone the gene-oracle repo to your local machine, and then run the script:
 ```bash
-python <gene-oracle-path>/scripts/make-classification.py --n-samples 1000 --n-genes 20 --n-sets 50
+python <gene-oracle-path>/scripts/make-input-data.py --n-samples 1000 --n-genes 20 --n-sets 50
 ```
 
 It is recommended that you create a separate directory for each pipeline that you use, so that the data and nextflow metadata for each pipeline are separate:
