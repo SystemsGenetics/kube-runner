@@ -10,7 +10,7 @@ fi
 PVC_NAME="$1"
 PVC_PATH="/workspace"
 POD_FILE="pod.yaml"
-POD_NAME="data-saver"
+POD_NAME="$USER-save-$(printf %04x $RANDOM)"
 REMOTE_PATH="$2"
 
 # create pod config file

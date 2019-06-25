@@ -39,7 +39,7 @@ This repository provides two scripts, `kube-load.sh` and `kube-save.sh`, for tra
 ```bash
 ./kube-load.sh <pvc-name> <input-dir>
 
-nextflow kuberun <pipeline> -v <pvc-name>
+nextflow [-C nextflow.config] kuberun <pipeline> -v <pvc-name> [options]
 
 ./kube-save.sh <pvc-name> <output-dir>
 ```
@@ -50,13 +50,13 @@ The `nextflow kuberun` command will automatically create a pod that runs your pi
 ./kube-load.sh <pvc-name> nextflow.config
 
 # launch pod
-./kube-run.sh <pipeline> <pvc-name> <run-name>
+./kube-run.sh <pvc-name> <pipeline> <options>
 
 # stream pod output
 kubectl logs -f <pod-name>
 
 # delete pod after it finishes
-kubectl delete pod <run-name>
+kubectl delete job <run-name>
 kubectl delete configmap <run-name>
 ```
 

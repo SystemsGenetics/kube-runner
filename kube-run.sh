@@ -3,13 +3,14 @@
 
 # parse command-line arguments
 if [[ $# != 3 ]]; then
-	echo "usage: $0 <pipeline> <pvc-name> <pod-name>"
+	echo "usage: $0 <pvc-name> <pipeline> <options>"
 	exit -1
 fi
 
-PIPELINE="$1"
-PVC_NAME="$2"
-POD_NAME="$3"
+PVC_NAME="$1"
+PIPELINE="$2"
+OPTIONS="$3"
+POD_NAME="$USER-run-$(echo $PIPELINE | tr /. - | tr [:upper:] [:lower:])-$(printf %04x $RANDOM)"
 SPEC_FILE="pod.yaml"
 
 PVC_PATH="/workspace"
@@ -30,6 +31,7 @@ metadata:
   name: $POD_NAME
 spec:
   completions: 1
+  ttlSecondsAfterFinished: 100
   template:
     spec:
       containers:
@@ -46,7 +48,7 @@ spec:
         command:
         - /bin/bash
         - -c
-        - source $CFG_PATH/init.sh; nextflow run $PIPELINE
+        - source $CFG_PATH/init.sh; nextflow run $PIPELINE $OPTIONS
         resources:
           limits:
             cpu: 1
