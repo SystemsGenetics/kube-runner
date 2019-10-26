@@ -44,6 +44,8 @@ nextflow [-C nextflow.config] kuberun <pipeline> -v <pvc-name> [options]
 ./kube-save.sh <pvc-name> <output-dir>
 ```
 
+__NOTE__: If you use `kube-load.sh` to upload a directory when that directory already exists remotely, `kube-load.sh` will not overwrite the remote directory. Instead, it will copy the local directory _into_ the remote directory. For example, if you try to upload a directory called `input` and that directory already exists remotely, the local `input` directory will be copied to `input/input`. Keep this in mind whenever you try to update an existing directory! You must delete or rename the remote directory before copying the new directory.
+
 The `nextflow kuberun` command will automatically create a pod that runs your pipeline. Alternatively, you can provide your own pod spec. The `kube-run.sh` script can generate a pod spec and launch it using the same parameters as `nextflow kuberun`:
 ```bash
 # transfer local nextflow.config if necessary
