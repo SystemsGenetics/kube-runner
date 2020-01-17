@@ -30,6 +30,7 @@ kind: Job
 metadata:
   name: $POD_NAME
 spec:
+  backoffLimit: 1
   completions: 1
   ttlSecondsAfterFinished: 100
   template:
