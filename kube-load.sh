@@ -10,48 +10,48 @@ fi
 PVC_NAME="$1"
 PVC_PATH="/workspace"
 POD_FILE="pod.yaml"
-POD_NAME="$USER-load-$(printf %04x $RANDOM)"
+POD_NAME="${USER}-load-$(printf %04x ${RANDOM})"
 LOCAL_PATH="$(realpath $2)"
 
 # create pod config file
-cat > $POD_FILE <<EOF
+cat > ${POD_FILE} <<EOF
 apiVersion: v1
 kind: Pod
 metadata:
-  name: $POD_NAME
+  name: ${POD_NAME}
 spec:
   containers:
-  - name: $POD_NAME
+  - name: ${POD_NAME}
     image: ubuntu
     args: ["sleep", "infinity"]
     volumeMounts:
-    - mountPath: $PVC_PATH
-      name: $PVC_NAME
+    - mountPath: ${PVC_PATH}
+      name: ${PVC_NAME}
   restartPolicy: Never
   volumes:
-    - name: $PVC_NAME
+    - name: ${PVC_NAME}
       persistentVolumeClaim:
-        claimName: $PVC_NAME
+        claimName: ${PVC_NAME}
 EOF
 
 # create pod
-kubectl create -f $POD_FILE
+kubectl create -f ${POD_FILE}
 
 # wait for pod to initialize
 POD_STATUS=""
 
-while [[ $POD_STATUS != "Running" ]]; do
+while [[ ${POD_STATUS} != "Running" ]]; do
 	sleep 1
-	POD_STATUS="$(kubectl get pods --no-headers $POD_NAME | awk '{ print $3 }')"
-	POD_STATUS="$(echo $POD_STATUS)"
+	POD_STATUS="$(kubectl get pods --no-headers ${POD_NAME} | awk '{ print $3 }')"
+	POD_STATUS="$(echo ${POD_STATUS})"
 done
 
 # copy input data to pod
 echo "copying data..."
 
-kubectl exec $POD_NAME -- bash -c "mkdir -p $PVC_PATH/$USER"
-kubectl cp "$LOCAL_PATH" "$POD_NAME:$PVC_PATH/$USER/$(basename $LOCAL_PATH)"
+kubectl exec ${POD_NAME} -- bash -c "mkdir -p ${PVC_PATH}/${USER}"
+kubectl cp "${LOCAL_PATH}" "${POD_NAME}:${PVC_PATH}/${USER}/$(basename ${LOCAL_PATH})"
 
 # delete pod
-kubectl delete -f $POD_FILE
-rm -f $POD_FILE
+kubectl delete -f ${POD_FILE}
+rm -f ${POD_FILE}
