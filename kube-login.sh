@@ -8,7 +8,7 @@ if [[ $# != 1 ]]; then
 fi
 
 PVC_NAME="$1"
-POD_NAME="$USER-shell-$(printf %04x $RANDOM)"
+POD_NAME="$USER-login-$(printf %04x $RANDOM)"
 SPEC_FILE="pod.yaml"
 
 PVC_PATH="/workspace"
@@ -30,7 +30,7 @@ metadata:
 spec:
   containers:
   - name: $POD_NAME
-    image: nextflow/nextflow:19.04.0
+    image: nextflow/nextflow:19.10.0
     imagePullPolicy: IfNotPresent
     env:
     - name: NXF_WORK
@@ -76,7 +76,6 @@ JOB_STATUS=""
 while [[ $JOB_STATUS != "Running" ]]; do
 	sleep 2
 	JOB_STATUS="$(kubectl get pod --no-headers --output jsonpath={.status.phase} $POD_NAME)"
-	JOB_STATUS="$(echo $JOB_STATUS)"
 done
 
 # login to pod
