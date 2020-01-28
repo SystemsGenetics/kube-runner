@@ -41,9 +41,8 @@ kubectl create -f ${POD_FILE}
 POD_STATUS=""
 
 while [[ ${POD_STATUS} != "Running" ]]; do
-	sleep 1
-	POD_STATUS="$(kubectl get pods --no-headers ${POD_NAME} | awk '{ print $3 }')"
-	POD_STATUS="$(echo ${POD_STATUS})"
+	sleep 2
+	POD_STATUS="$(kubectl get pod --no-headers --output jsonpath={.status.phase} ${POD_NAME})"
 done
 
 # copy output data from pod
