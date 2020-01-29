@@ -6,8 +6,8 @@ This repository provides tools and instructions for running nextflow pipelines o
 - [SystemsGenetics/gene-oracle](https://github.com/SystemsGenetics/gene-oracle)
 - [SystemsGenetics/KINC-nf](https://github.com/SystemsGenetics/KINC-nf)
 
-(In Progress) 
-- [ebenz99/MPCM-Nextflow](https://github.com/ebenz99/MPCM-Nextflow) 
+(In Progress)
+- [ebenz99/MPCM-Nextflow](https://github.com/ebenz99/MPCM-Nextflow)
 
 ## Dependencies
 
@@ -19,7 +19,7 @@ There are a few administrative tasks which must be done in order for nextflow to
 
 - Nextflow needs a service account with the `edit` and `view` cluster roles:
 ```bash
-kubectl create rolebinding default-edit --clusterrole=edit --serviceaccount=<namespace>:default 
+kubectl create rolebinding default-edit --clusterrole=edit --serviceaccount=<namespace>:default
 kubectl create rolebinding default-view --clusterrole=view --serviceaccount=<namespace>:default
 ```
 
@@ -51,15 +51,8 @@ The `nextflow kuberun` command will automatically create a pod that runs your pi
 # transfer local nextflow.config if necessary
 ./kube-load.sh <pvc-name> nextflow.config
 
-# launch pod
-./kube-run.sh <pvc-name> <pipeline> <options>
-
-# stream pod output
-kubectl logs -f <pod-name>
-
-# delete pod after it finishes
-kubectl delete job <run-name>
-kubectl delete configmap <run-name>
+# run pipeline
+./kube-run.sh <pvc-name> <pipeline> [options]
 ```
 
 As you run pipelines, nextflow will create pods to perform the work. Some pods may not be properly cleaned up due to errors or other issues, therefore it is important to clean up your pods periodically. You can list all of the pods in your namespace using `kubectl`:
@@ -70,6 +63,12 @@ kubectl get pods
 You can use the `kube-clean.sh` script in this repository to clean up dangling pods:
 ```bash
 ./kube-clean.sh
+```
+
+Lastly, there are a few additional scripts you can use to manage the pods in your namespace:
+```bash
+./kube-logs.sh
+./kube-pods.sh
 ```
 
 ## Appendix
