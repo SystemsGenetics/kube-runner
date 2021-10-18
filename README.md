@@ -109,6 +109,11 @@ Test your Kubernetes configuration:
 kubectl config view
 ```
 
+Switch to a particular namespace:
+```bash
+kubectl config set-context --current --namespace=<namespace>
+```
+
 View the physical nodes on your cluster:
 ```bash
 kubectl get nodes --show-labels
