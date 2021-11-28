@@ -1,13 +1,6 @@
 # kube-runner
 
-This repository provides tools and instructions for running nextflow pipelines on a Kubernetes cluster. These scripts have been tested for the following pipelines:
-
-- [SystemsGenetics/GEMmaker](https://github.com/SystemsGenetics/GEMmaker)
-- [SystemsGenetics/gene-oracle](https://github.com/SystemsGenetics/gene-oracle)
-- [SystemsGenetics/KINC-nf](https://github.com/SystemsGenetics/KINC-nf)
-
-(In Progress)
-- [ebenz99/MPCM-Nextflow](https://github.com/ebenz99/MPCM-Nextflow)
+This repository provides tools and instructions for running nextflow pipelines on a Kubernetes cluster.
 
 ## Dependencies
 
