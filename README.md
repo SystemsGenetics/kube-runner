@@ -102,6 +102,11 @@ Test your Kubernetes configuration:
 kubectl config view
 ```
 
+Switch to a particular cluster (context):
+```bash
+kubectl config use-context <context>
+```
+
 Switch to a particular namespace:
 ```bash
 kubectl config set-context --current --namespace=<namespace>
